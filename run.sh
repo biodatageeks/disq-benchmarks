@@ -1,5 +1,5 @@
 # Env variables
-export DATAPROC_CLUSTER_NAME=tw-cluster2
+export DATAPROC_CLUSTER_NAME=cluster-$USER
 export CLOUDSDK_CORE_PROJECT=broad-gatk-collab
 export CLI_JAR=spark-bam-cli.jar
 export GOOGLE_CLOUD_NIO_JAR=google-cloud-nio-0.20.0-alpha-shaded.jar
@@ -61,3 +61,8 @@ count-reads com.tom_e_white.disq.benchmarks.DisqCountReads "$LARGE_SIZED_BAM yar
 count-reads com.tom_e_white.disq.benchmarks.HadoopBamCountReads "$LARGE_SIZED_BAM yarn"
 count-reads-sparkbam $LARGE_SIZED_BAM
 
+# Before running against files in HDFS, ssh into the master node and run
+# gsutil cp gs://disq-tom-testdata/giab/ftp/data/NA12878/NA12878_PacBio_MtSinai/sorted_final_merged.bam - | hadoop fs -put - /tmp/sorted_final_merged.bam
+
+count-reads com.tom_e_white.disq.benchmarks.DisqCountReads "hdfs://$DATAPROC_CLUSTER_NAME-m/tmp/sorted_final_merged.bam yarn false 134217728"
+count-reads com.tom_e_white.disq.benchmarks.HadoopBamCountReads "hdfs://$DATAPROC_CLUSTER_NAME-m/tmp/sorted_final_merged.bam yarn"
