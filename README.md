@@ -28,6 +28,16 @@ difference is minimal (probably because HDFS itself does caching).
 for GCS, but is better when [pre-fetch] is used. It may be possible to improve
 the time further by tuning the size of the buffer (benchmarked at 4MB).
 
+### Accuracy
+
+[Hadoop-BAM] is known to produce both
+[false negatives and false positives][spark-bam-accuracy] when checking if a
+virtual offset in a BAM file is a record start, whereas [spark-bam] does
+not produce any false readings.
+
+Using the `DisqCheckBam` program on the source data, no false negatives or
+false positives were recorded.
+
 ## Running
 
 The _download.sh_ script is for retrieving the source data and storing in the
@@ -44,3 +54,4 @@ writes to the console.
 [Hadoop-BAM]: https://github.com/HadoopGenomics/Hadoop-BAM
 [spark-bam]: http://www.hammerlab.org/spark-bam/
 [pre-fetch]: https://github.com/tomwhite/disq/tree/nio_prefetcher
+[spark-bam-accuracy]: http://www.hammerlab.org/spark-bam/benchmarks#accuracy
