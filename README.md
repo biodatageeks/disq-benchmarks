@@ -4,27 +4,29 @@ Benchmarks for [Disq].
 
 ## Results
 
-Running count reads on a 136.78 GiB [BAM file](ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/data/NA12878/NA12878_PacBio_MtSinai/sorted_final_merged.bam)
-in Google Cloud Storage (GCS). The file contains 134,217,728 reads.
+### Performance
 
-| Library      | Filesystem connector | Time (s) |
-| ------------ | -------------------- | -------- |
-| [Disq]       | GCS Connector        | 144      |
-| [Disq]       | NIO                  | 277      |
-| [Disq]       | NIO with [pre-fetch] | 152      |
-| [Disq]       | HDFS                 | 167      |
-| [Hadoop-BAM] | GCS Connector        | 278      |
-| [Hadoop-BAM] | HDFS                 | 173      |
-| [spark-bam]  | NIO                  | 273      |
+Running count reads on a 136.78 GiB [BAM file](ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/data/NA12878/NA12878_PacBio_MtSinai/sorted_final_merged.bam)
+in Google Cloud Storage (GCS). The file contains 68,064,542 reads.
+
+| Filesystem connector     | Library      | Time (s) |
+| ------------------------ | ------------ | -------- |
+| GCS Connector            | [Disq]       | 144      |
+| GCS Connector            | [Hadoop-BAM] | 278      |
+| GCS NIO                  | [Disq]       | 277      |
+| GCS NIO                  | [spark-bam]  | 273      |
+| GCS NIO with [pre-fetch] | [Disq]       | 152      |
+| HDFS                     | [Disq]       | 167      |
+| HDFS                     | [Hadoop-BAM] | 173      |
 
 [Disq] does better than [Hadoop-BAM] using the GCS Connector since it
 computes splits in parallel on the cluster, and it caches blocks of data to
 permit efficient seeks (forwards and backwards in the stream). On HDFS the
 difference is minimal (probably because HDFS itself does caching).
 
-[Disq] is comparable to [spark-bam] when using the NIO filesystem connector,
-but is better when [pre-fetch] is used. It may be possible to improve the
-time further by tuning the size of the buffer (benchmarked at 4MB).
+[Disq] is comparable to [spark-bam] when using the NIO filesystem connector
+for GCS, but is better when [pre-fetch] is used. It may be possible to improve
+the time further by tuning the size of the buffer (benchmarked at 4MB).
 
 ## Running
 
