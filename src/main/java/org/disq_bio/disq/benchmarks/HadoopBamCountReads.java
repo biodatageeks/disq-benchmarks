@@ -1,4 +1,4 @@
-package com.tom_e_white.disq.benchmarks;
+package org.disq_bio.disq.benchmarks;
 
 import htsjdk.samtools.ValidationStringency;
 import org.apache.hadoop.io.LongWritable;

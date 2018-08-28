@@ -1,9 +1,9 @@
-package com.tom_e_white.disq.benchmarks;
+package org.disq_bio.disq.benchmarks;
 
-import com.tom_e_white.disq.impl.formats.bam.BamRecordGuesserChecker;
 import java.io.IOException;
 import java.util.Map;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.disq_bio.disq.impl.formats.bam.BamRecordGuesserChecker;
 
 public class DisqCheckBam {
   private static Map<Long, BamRecordGuesserChecker.RecordStartResult> check(

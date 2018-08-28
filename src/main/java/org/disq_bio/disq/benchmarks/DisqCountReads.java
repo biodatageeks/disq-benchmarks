@@ -1,9 +1,9 @@
-package com.tom_e_white.disq.benchmarks;
+package org.disq_bio.disq.benchmarks;
 
-import com.tom_e_white.disq.HtsjdkReadsRddStorage;
 import htsjdk.samtools.ValidationStringency;
 import java.io.IOException;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.disq_bio.disq.HtsjdkReadsRddStorage;
 
 public class DisqCountReads {
 
