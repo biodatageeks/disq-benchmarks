@@ -32,7 +32,7 @@ public class DisqDebugPartitions {
       JavaRDD<PathChunk> pathChunks = disqDebugPartitions.getPathChunks(jsc, path, splitSize);
       System.out.println("Path chunks");
       for (PathChunk pathChunk : pathChunks.collect()) {
-        System.out.println(pathChunks);
+        System.out.println(pathChunk);
       }
       // SBIIndex sbiIndex = disqDebugPartitions.getSBIIndex(jsc.hadoopConfiguration(), path);
     }
