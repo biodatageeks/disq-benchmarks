@@ -1,9 +1,12 @@
 package org.disq_bio.disq.benchmarks;
 
 import htsjdk.samtools.ValidationStringency;
+import htsjdk.samtools.util.Interval;
 import java.io.IOException;
+import java.util.Collections;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.disq_bio.disq.HtsjdkReadsRddStorage;
+import org.disq_bio.disq.HtsjdkReadsTraversalParameters;
 
 public class DisqCountReads {
 
@@ -11,11 +14,14 @@ public class DisqCountReads {
       throws IOException {
     try (JavaSparkContext jsc =
         new JavaSparkContext(sparkMaster, DisqCountReads.class.getSimpleName())) {
+      Interval chr1 = new Interval("chr1", 1, Integer.MAX_VALUE);
+      HtsjdkReadsTraversalParameters<Interval> traversalParameters =
+          new HtsjdkReadsTraversalParameters<>(Collections.singletonList(chr1), false);
       return HtsjdkReadsRddStorage.makeDefault(jsc)
           .useNio(useNio)
           .splitSize(splitSize)
           .validationStringency(ValidationStringency.SILENT)
-          .read(path)
+          .read(path, traversalParameters)
           .getReads()
           .count();
     }
