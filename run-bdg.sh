@@ -11,8 +11,13 @@ MID_SIZED_BAM=gs://bdg-sequila-dev/data/b1_0_uncompressed.bam
 LOG_DIR=~/benchmark_logs
 RESULTS_DIR=~/results
 
-DISQ_BENCH_JAR=disq-benchmarks-0.0.2-SNAPSHOT.jar
-
+DISQ_BENCH_JAR=disq-benchmarks-0.0.4-SNAPSHOT.jar
+USE_KRYO=false
+USE_NIO=true
+SPLIT_128=134217728
+SPLIT_64=67108864
+SPLIT_32=33554432
+SPLIT_256=268435456
 gsutil cp gs://bdg-sequila-dev/benchmark/jars/$DISQ_BENCH_JAR /tmp
 
 DISQ_BENCH_JAR_PATH=/tmp/$DISQ_BENCH_JAR
@@ -37,9 +42,10 @@ count-reads() {
     echo "$CLASS,$ARGS,$RC,$DURATION_SEC" >> $RESULTS_CSV
 }
 
-count-reads "$CLASS_NAME" "$CRAM_FILE \
+count-reads "$CLASS_NAME" "$MID_SIZED_BAM \
       $FILETYPE \
       $REF_PATH \
-      $(python get-spark-arg.py --master) \
-      true \
-      134217728"
+      $(python get-spark-arg.py --master)
+      $USE_NIO \
+      $SPLIT_256 \
+      $USE_KRYO"
