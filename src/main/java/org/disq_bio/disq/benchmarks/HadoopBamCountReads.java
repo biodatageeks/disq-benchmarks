@@ -16,6 +16,9 @@ public class HadoopBamCountReads {
       if (filetype.toUpperCase().equals("BAM")) {
 
         jsc.hadoopConfiguration().set(SAMHeaderReader.VALIDATION_STRINGENCY_PROPERTY, ValidationStringency.SILENT.name());
+        jsc.getConf()
+                .set("spark.shuffle.service.enabled", "false")
+                .set("spark.dynamicAllocation.enabled", "false");
 
         return jsc.newAPIHadoopFile(
                 path,
@@ -29,6 +32,9 @@ public class HadoopBamCountReads {
 
         jsc.hadoopConfiguration().set(CRAMInputFormat.REFERENCE_SOURCE_PATH_PROPERTY, refPath);
         jsc.hadoopConfiguration().set(SAMHeaderReader.VALIDATION_STRINGENCY_PROPERTY, ValidationStringency.SILENT.name());
+        jsc.getConf()
+                .set("spark.shuffle.service.enabled", "false")
+                .set("spark.dynamicAllocation.enabled", "false");
 
         return jsc.newAPIHadoopFile(
                 path,
