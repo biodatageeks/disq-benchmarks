@@ -4,6 +4,7 @@ import htsjdk.samtools.ValidationStringency;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.seqdoop.hadoop_bam.AnySAMInputFormat;
+import org.seqdoop.hadoop_bam.BAMInputFormat;
 import org.seqdoop.hadoop_bam.CRAMInputFormat;
 import org.seqdoop.hadoop_bam.SAMRecordWritable;
 import org.seqdoop.hadoop_bam.util.SAMHeaderReader;
@@ -31,14 +32,14 @@ public class HadoopBamCountReads {
       } else if (filetype.toUpperCase().equals("CRAM")) {
 
         jsc.hadoopConfiguration().set(CRAMInputFormat.REFERENCE_SOURCE_PATH_PROPERTY, refPath);
-        jsc.hadoopConfiguration().set(SAMHeaderReader.VALIDATION_STRINGENCY_PROPERTY, ValidationStringency.SILENT.name());
+//        jsc.hadoopConfiguration().set(SAMHeaderReader.VALIDATION_STRINGENCY_PROPERTY, ValidationStringency.SILENT.name());
         jsc.getConf()
                 .set("spark.shuffle.service.enabled", "false")
                 .set("spark.dynamicAllocation.enabled", "false");
 
         return jsc.newAPIHadoopFile(
                 path,
-                AnySAMInputFormat.class,
+                CRAMInputFormat.class,
                 LongWritable.class,
                 SAMRecordWritable.class,
                 jsc.hadoopConfiguration())
